@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-typedef UserActivityCallback = Function(FlutterSpotlightUserActivity?);
+typedef UserActivityCallback = Function(
+    FlutterSpotlightUserActivity? userActivity);
 
 class FlutterSpotlightItem {
   FlutterSpotlightItem({
@@ -93,6 +94,10 @@ class FlutterCoreSpotlight {
 
   Future<String> deleteSearchableItems(List<String> identifiers) async {
     return await _channel.invokeMethod('delete_searchable_items', identifiers);
+  }
+
+  Future<String> deleteAllSearchableItems() async {
+    return await _channel.invokeMethod('delete_all_searchable_items');
   }
 
   void configure({required UserActivityCallback onSearchableItemSelected}) {

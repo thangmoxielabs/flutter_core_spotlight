@@ -6,6 +6,7 @@ import MobileCoreServices
 public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
   
   var channel: FlutterMethodChannel?
+  let searchableIndex = CSSearchableIndex(name: "EM_INDEX")
   
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "flutter_core_spotlight", binaryMessenger: registrar.messenger())
@@ -25,6 +26,7 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
       let searchableItems = arguments.map { itemMap -> CSSearchableItem in
         let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
         attributeSet.title = itemMap["attributeTitle"] as? String
+        attributeSet.displayName = itemMap["attributeTitle"] as? String
         attributeSet.contentDescription = itemMap["attributeDescription"] as? String
         
         let item = CSSearchableItem(uniqueIdentifier: "\(itemMap["uniqueIdentifier"] as? String ?? "")",
@@ -32,7 +34,7 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
                                     attributeSet: attributeSet)
         return item
       }
-      CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
+      searchableIndex.indexSearchableItems(searchableItems) { error in
         if let error = error {
           result(FlutterError(code: "500", message: error.localizedDescription, details: nil))
         } else {
@@ -45,7 +47,16 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
         result(FlutterError())
         break
       }
-      CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: arguments) { error in
+      searchableIndex.deleteSearchableItems(withIdentifiers: arguments) { error in
+        if let error = error {
+          result(FlutterError(code: "500", message: error.localizedDescription, details: nil))
+        } else {
+          result("success")
+        }
+      }
+      break
+    case "delete_all_searchable_items":
+      searchableIndex.deleteAllSearchableItems { error in
         if let error = error {
           result(FlutterError(code: "500", message: error.localizedDescription, details: nil))
         } else {

@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_core_spotlight/flutter_core_spotlight.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_native_alert/flutter_native_alert.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,10 +20,20 @@ class _MyAppState extends State<MyApp> {
     FlutterCoreSpotlight.instance.configure(
       onSearchableItemSelected: (userActivity) {
         print(userActivity);
-        FlutterNativeAlert.getInstance().showConfirm(
-          title: userActivity?.uniqueIdentifier ?? 'Unknown title',
-          message: jsonEncode(userActivity?.userInfo ?? {}),
-          confirmButtonText: 'OK',
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(
+              userActivity?.uniqueIdentifier ?? 'Unknown title',
+            ),
+            content: Text(jsonEncode(userActivity?.userInfo ?? {})),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop,
+                child: Text('OK'),
+              ),
+            ],
+          ),
         );
       },
     );
