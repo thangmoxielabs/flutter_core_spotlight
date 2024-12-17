@@ -24,15 +24,7 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
         break
       }
       let searchableItems = arguments.map { itemMap -> CSSearchableItem in
-        let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
-        attributeSet.title = itemMap["attributeTitle"] as? String
-        attributeSet.displayName = itemMap["attributeTitle"] as? String
-        attributeSet.contentDescription = itemMap["attributeDescription"] as? String
-        
-        let item = CSSearchableItem(uniqueIdentifier: "\(itemMap["uniqueIdentifier"] as? String ?? "")",
-                                    domainIdentifier: itemMap["domainIdentifier"] as? String ?? "",
-                                    attributeSet: attributeSet)
-        return item
+        return createSearchableItem(from: itemMap)
       }
       searchableIndex.indexSearchableItems(searchableItems) { error in
         if let error = error {
@@ -84,5 +76,34 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
                             ])
     }
     return true
+  }
+
+  private func createSearchableItem(from itemMap: [String: Any]) -> CSSearchableItem {
+    let attributeSet = CSSearchableItemAttributeSet(contentType: UTType.text)
+    attributeSet.identifier = itemMap["uniqueIdentifier"] as? String
+    attributeSet.title = itemMap["attributeTitle"] as? String
+    attributeSet.displayName = itemMap["attributeTitle"] as? String
+    attributeSet.contentDescription = itemMap["attributeDescription"] as? String
+    
+    if let addedDateString = itemMap["addedDate"] as? String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let addedDate = dateFormatter.date(from: addedDateString) {
+            attributeSet.addedDate = addedDate
+        } else {
+            attributeSet.addedDate = Date()
+        }
+    } else {
+        attributeSet.addedDate = Date()
+    }
+    
+    if let keywords = itemMap["keywords"] as? [String] {
+        attributeSet.keywords = keywords
+    }
+    
+    let item = CSSearchableItem(uniqueIdentifier: "\(itemMap["uniqueIdentifier"] as? String ?? "")",
+                                domainIdentifier: itemMap["domainIdentifier"] as? String ?? "",
+                                attributeSet: attributeSet)
+    return item
   }
 }

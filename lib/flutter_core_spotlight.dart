@@ -12,6 +12,8 @@ class FlutterSpotlightItem {
     required this.domainIdentifier,
     required this.attributeTitle,
     required this.attributeDescription,
+    this.keywords = const [],
+    this.addedDate,
   });
 
   factory FlutterSpotlightItem.fromJson(String source) =>
@@ -23,6 +25,8 @@ class FlutterSpotlightItem {
       domainIdentifier: map['domainIdentifier'],
       attributeTitle: map['attributeTitle'],
       attributeDescription: map['attributeDescription'],
+      keywords: map['keywords'] != null ? List<String>.from(map['keywords']) : const [],
+      addedDate: map['addedDate'],
     );
   }
 
@@ -30,6 +34,8 @@ class FlutterSpotlightItem {
   final String attributeTitle;
   final String domainIdentifier;
   final String uniqueIdentifier;
+  final List<String> keywords;
+  final String? addedDate;
 
   Map<String, dynamic> toMap() {
     return {
@@ -37,6 +43,8 @@ class FlutterSpotlightItem {
       'domainIdentifier': domainIdentifier,
       'attributeTitle': attributeTitle,
       'attributeDescription': attributeDescription,
+      'keywords': keywords,
+      'addedDate': addedDate,
     };
   }
 

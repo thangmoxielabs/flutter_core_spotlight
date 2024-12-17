@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
                       domainIdentifier: 'com.example.flutter_spotlight_plugin',
                       attributeTitle: _textController.text,
                       attributeDescription: 'This is an example description',
+                      creationDate: '2023-10-01',
                     )
                   ]);
                 },
