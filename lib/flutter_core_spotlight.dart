@@ -11,6 +11,7 @@ class FlutterSpotlightItem {
     required this.uniqueIdentifier,
     required this.domainIdentifier,
     required this.attributeTitle,
+    required this.attributeDisplayName,
     required this.attributeDescription,
     this.keywords = const [],
     this.addedDate,
@@ -24,14 +25,18 @@ class FlutterSpotlightItem {
       uniqueIdentifier: map['uniqueIdentifier'],
       domainIdentifier: map['domainIdentifier'],
       attributeTitle: map['attributeTitle'],
+      attributeDisplayName: map['attributeDisplayName'],
       attributeDescription: map['attributeDescription'],
-      keywords: map['keywords'] != null ? List<String>.from(map['keywords']) : const [],
+      keywords: map['keywords'] != null
+          ? List<String>.from(map['keywords'])
+          : const [],
       addedDate: map['addedDate'],
     );
   }
 
   final String attributeDescription;
   final String attributeTitle;
+  final String attributeDisplayName;
   final String domainIdentifier;
   final String uniqueIdentifier;
   final List<String> keywords;

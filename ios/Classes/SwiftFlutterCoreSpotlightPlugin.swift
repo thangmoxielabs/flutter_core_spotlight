@@ -82,7 +82,7 @@ public class SwiftFlutterCoreSpotlightPlugin: NSObject, FlutterPlugin {
     let attributeSet = CSSearchableItemAttributeSet(contentType: UTType.text)
     attributeSet.identifier = itemMap["uniqueIdentifier"] as? String
     attributeSet.title = itemMap["attributeTitle"] as? String
-    attributeSet.displayName = itemMap["attributeTitle"] as? String
+    attributeSet.displayName = itemMap["attributeDisplayName"] as? String
     attributeSet.contentDescription = itemMap["attributeDescription"] as? String
     
     if let addedDateString = itemMap["addedDate"] as? String {

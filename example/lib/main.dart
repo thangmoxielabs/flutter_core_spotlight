@@ -65,9 +65,10 @@ class _MyAppState extends State<MyApp> {
                     FlutterSpotlightItem(
                       uniqueIdentifier: _textController.text,
                       domainIdentifier: 'com.example.flutter_spotlight_plugin',
+                      attributeDisplayName: _textController.text,
                       attributeTitle: _textController.text,
                       attributeDescription: 'This is an example description',
-                      creationDate: '2023-10-01',
+                      addedDate: '2023-10-01',
                     )
                   ]);
                 },
